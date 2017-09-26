@@ -103,6 +103,8 @@ def get_training_data_set():
     '''
     image_loader = ImageLoader('train-images-idx3-ubyte', 60000)
     label_loader = LabelLoader('train-labels-idx1-ubyte', 60000)
+    #image_loader = ImageLoader('train-images-idx3-ubyte', 10)
+    #label_loader = LabelLoader('train-labels-idx1-ubyte', 10)
     return image_loader.load(), label_loader.load()
 
 
@@ -112,6 +114,8 @@ def get_test_data_set():
     '''
     image_loader = ImageLoader('t10k-images-idx3-ubyte', 10000)
     label_loader = LabelLoader('t10k-labels-idx1-ubyte', 10000)
+    # image_loader = ImageLoader('t10k-images-idx3-ubyte', 1)
+    # label_loader = LabelLoader('t10k-labels-idx1-ubyte', 1)
     return image_loader.load(), label_loader.load()
 
 
@@ -162,17 +166,26 @@ def train_and_evaluate():
     while True:
         epoch += 1
         network.train(train_labels, train_data_set, 0.01, 1)
-        print '%s epoch %d finished, loss %f' % (now(), epoch, 
-            network.loss(train_labels[-1], network.predict(train_data_set[-1])))
+        print '%s epoch %d finished, loss %f' % (now(), epoch, network.loss(train_labels[-1], network.predict(train_data_set[-1])))
         if epoch % 2 == 0:
             error_ratio = evaluate(network, test_data_set, test_labels)
             print '%s after epoch %d, error ratio is %f' % (now(), epoch, error_ratio)
             if error_ratio > last_error_ratio:
+                print network.dump()
                 break
             else:
                 last_error_ratio = error_ratio
 
 if __name__ == '__main__':
     train_and_evaluate()
+    #image,label = get_training_data_set()
+    #print image
+    #print len(image)
+    #print type(image)
+    #print type(label)
+    #print get_training_data_set()
+    #print network.dum()
+    #test_data_set, test_labels = transpose(get_test_data_set())
+    #print test_labels
 
 
